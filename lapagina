@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Herramientas Útiles</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: white;
+    }
+
+    .tools-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+
+    .tool {
+      background-color: #111;
+      padding: 1rem;
+      border-radius: 1rem;
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    input, textarea, button {
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #222;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #333;
+    }
+
+    .result {
+      background-color: #0f0;
+      color: #000;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      word-wrap: break-word;
+    }
+
+    .color-display {
+      height: 50px;
+      border-radius: 0.5rem;
+      border: 2px solid #0f0;
+    }
+
+    .copy-button {
+      background-color: #444;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Herramientas de Texto y Colores</h1>
+  <div class="tools-container">
+
+    <!-- Contador de caracteres y palabras -->
+    <div class="tool">
+      <label for="contador">Contador de caracteres y palabras</label>
+      <textarea id="contador"></textarea>
+      <button onclick="contar()">Contar</button>
+      <div class="result" id="resultadoContador"></div>
+      <button class="copy-button" onclick="copiarTexto('resultadoContador')">Copiar</button>
+    </div>
+
+    <!-- Convertidor a mayúsculas -->
+    <div class="tool">
+      <label for="mayus">Convertir a MAYÚSCULAS</label>
+      <input type="text" id="mayus">
+      <button onclick="mayus()">Convertir</button>
+      <div class="result" id="resultadoMayus"></div>
+      <button class="copy-button" onclick="copiarTexto('resultadoMayus')">Copiar</button>
+    </div>
+
+    <!-- Reversor de texto -->
+    <div class="tool">
+      <label for="reverso">Revertir texto</label>
+      <input type="text" id="reverso">
+      <button onclick="revertirTexto()">Revertir</button>
+      <div class="result" id="resultadoReverso"></div>
+      <button class="copy-button" onclick="copiarTexto('resultadoReverso')">Copiar</button>
+    </div>
+
+    <!-- Generador de contraseña -->
+    <div class="tool">
+      <label for="longitud">Generar contraseña (hasta 30)</label>
+      <input type="number" id="longitud" min="1" max="30" value="12">
+      <button onclick="generarPassword()">Generar</button>
+      <div class="result" id="resultadoPassword"></div>
+      <button class="copy-button" onclick="copiarTexto('resultadoPassword')">Copiar</button>
+    </div>
+
+    <!-- Generador de color -->
+    <div class="tool">
+      <label>Generar código de color</label>
+      <button onclick="generarColor()">Generar</button>
+      <div class="result" id="resultadoColor"></div>
+      <div class="color-display" id="colorPreview"></div>
+      <button class="copy-button" onclick="copiarTexto('resultadoColor')">Copiar</button>
+    </div>
+
+  </div>
+
+  <script>
+    function contar() {
+      const texto = document.getElementById('contador').value;
+      const chars = texto.length;
+      const palabras = texto.trim().split(/\s+/).filter(p => p).length;
+      document.getElementById('resultadoContador').textContent = `Caracteres: ${chars} | Palabras: ${palabras}`;
+    }
+
+    function mayus() {
+      const texto = document.getElementById('mayus').value;
+      document.getElementById('resultadoMayus').textContent = texto.toUpperCase();
+    }
+
+    function revertirTexto() {
+      const texto = document.getElementById('reverso').value;
+      document.getElementById('resultadoReverso').textContent = texto.split("").reverse().join("");
+    }
+
+    function generarPassword() {
+      const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=";
+      let length = parseInt(document.getElementById('longitud').value);
+      if (isNaN(length) || length < 1) length = 12;
+      if (length > 30) length = 30;
+
+      let password = "";
+      for (let i = 0; i < length; i++) {
+        const random = Math.floor(Math.random() * caracteres.length);
+        password += caracteres[random];
+      }
+      document.getElementById('resultadoPassword').textContent = password;
+    }
+
+    function generarColor() {
+      const color = "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+      document.getElementById('resultadoColor').textContent = color;
+      document.getElementById('colorPreview').style.backgroundColor = color;
+    }
+
+    function copiarTexto(id) {
+      const texto = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(texto).then(() => {
+        alert("Copiado al portapapeles!");
+      });
+    }
+  </script>
+</body>
+</html>
